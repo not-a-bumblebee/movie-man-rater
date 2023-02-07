@@ -1,24 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import Content from './Content'
+import Searchbar from './Searchbar';
+import { useState } from 'react';
+import { Progress, Heading, Box } from '@chakra-ui/react';
+
 
 function App() {
+  const [celeb, setCeleb] = useState()
+  const [loading, setLoading] = useState(false)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box className='page-container' backgroundColor={"#7EBC89"} paddingBottom={"12vh"}>
+      {loading && <Progress size='sm' isIndeterminate />}
+      <Heading textAlign={'center'} paddingTop={10} onClick={()=>{setCeleb("")}} cursor={"pointer"}>MOVIE PERSON RATER</Heading>
+      <div className="App">
+
+        <Searchbar setCeleb={setCeleb} setLoading={setLoading} />
+
+        {celeb && <Content celeb={celeb} loading={loading} setLoading={setLoading} />}
+      </div>
+
+    </Box>
   );
 }
 
