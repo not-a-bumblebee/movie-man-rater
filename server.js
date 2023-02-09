@@ -3,11 +3,13 @@ const puppeteer = require('puppeteer')
 const cors = require('cors')
 require('dotenv').config();
 const bodyParser = require('body-parser');
+const path = require('path')
 
 const app = express();
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use(express.static('build'))
 console.log("Server Started");
 
 
@@ -128,6 +130,10 @@ app.get('/api/search/:q', async (req, res) => {
 
     res.json(await query.json())
 
+})
+
+app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(__dirname,'build','index.html'))
 })
 
 

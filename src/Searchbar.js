@@ -13,10 +13,10 @@ export default function Searchbar({setCeleb,setLoading }) {
 
     const handleInput = async (e) => {
         console.log("Searchbar input:",e.target.value);
-        let z = await (await fetch('http://localhost:4000/api/search/' + e.target.value)).json()
-    
-        console.log("fetched data:",z);
+        
         if (e.target.value !== "") {
+            let z = await (await fetch('http://localhost:4000/api/search/' + e.target.value)).json()
+            console.log("fetched data:",z);
             let pastName = ""
             let jsx = []
 
