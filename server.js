@@ -6,11 +6,12 @@ const bodyParser = require('body-parser');
 const path = require('path')
 
 const app = express();
+const PORT = 4000;
 
 app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
-console.log("Server Started");
+
 
 
 let API_KEY = process.env.API_KEY;
@@ -137,4 +138,4 @@ app.get("*",(req,res)=>{
 })
 
 
-app.listen(4000)
+app.listen(PORT,()=>{console.log("Server started on port:",PORT)})

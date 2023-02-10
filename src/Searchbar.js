@@ -15,7 +15,7 @@ export default function Searchbar({setCeleb,setLoading }) {
         console.log("Searchbar input:",e.target.value);
         
         if (e.target.value !== "") {
-            let z = await (await fetch('http://localhost:4000/api/search/' + e.target.value)).json()
+            let z = await (await fetch('https://movie-man-rater-api.onrender.com/search/' + e.target.value)).json()
             console.log("fetched data:",z);
             let pastName = ""
             let jsx = []
