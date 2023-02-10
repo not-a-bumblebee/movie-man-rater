@@ -7,9 +7,9 @@ const path = require('path')
 
 const app = express();
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
-app.use(express.static('build'))
 console.log("Server Started");
 
 
