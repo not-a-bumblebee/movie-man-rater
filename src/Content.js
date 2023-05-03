@@ -38,7 +38,7 @@ export default function Content({ celeb, setLoading }) {
     console.log("bio", bio);
 
     const getData = async () => {
-        let stuff = await (await fetch("http://localhost:4000/api/scrape/" + celeb)).json()
+        let stuff = await (await fetch("https://movie-man-rater-api.onrender.com/api/scrape/" + celeb)).json()
         console.log("fetched data", stuff);
 
         let criticSum = 0;

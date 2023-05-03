@@ -3,12 +3,15 @@ const puppeteer = require('puppeteer')
 const cors = require('cors')
 require('dotenv').config();
 const bodyParser = require('body-parser');
+const path = require('path')
 
 const app = express();
+const PORT = 4000;
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
-console.log("Server Started");
+
 
 
 let API_KEY = process.env.API_KEY;
@@ -130,5 +133,9 @@ app.get('/api/search/:q', async (req, res) => {
 
 })
 
+app.get("/",(req,res)=>{
+    res.sendFile(path.resolve(__dirname,'build','index.html'))
+})
 
-app.listen(4000)
+
+app.listen(PORT,()=>{console.log("Server started on port:",PORT)})
