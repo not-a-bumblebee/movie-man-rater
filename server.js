@@ -27,6 +27,7 @@ const webSteal = async (celebName) => {
     
     //This code lets us navigate to our desired page, as well as check the response code
     let code = (await page.goto(baseUrl + celebName)).status()
+    console.log("Code",code);
     
     //if the code sent back isn't OK (200), then we try an alternate url.
     if ( code !=200) {
@@ -37,7 +38,10 @@ const webSteal = async (celebName) => {
             await page.goto(baseUrl+nameTest[0]+"_"+nameTest[2])
             await page.waitForNetworkIdle()
             await page.screenshot({ path: 'planB.png' })
-        }    
+        }
+        else{
+            console.log("plan A")
+        }
     }
 
     
