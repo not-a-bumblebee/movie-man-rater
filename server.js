@@ -1,5 +1,6 @@
 const express = require('express')
-const puppeteer = require('puppeteer')
+// const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer-extra')
 const cors = require('cors')
 require('dotenv').config();
 const bodyParser = require('body-parser');
@@ -8,6 +9,9 @@ const path = require('path')
 const app = express();
 const PORT = 4000;
 
+
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+puppeteer.use(StealthPlugin())
 app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
