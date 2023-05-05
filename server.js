@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const path = require('path')
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT||4000;
 
 
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
@@ -21,7 +21,10 @@ app.use(bodyParser.json())
 let API_KEY = process.env.API_KEY;
 
 const webSteal = async (celebName) => {
-    const browser = await puppeteer.launch({headless:true});
+    const browser = await puppeteer.launch({headless:true, args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+      ]});
 
     const baseUrl = "https://www.rottentomatoes.com/celebrity/";
 
