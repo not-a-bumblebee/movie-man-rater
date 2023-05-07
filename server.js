@@ -5,13 +5,14 @@ const cors = require('cors')
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const path = require('path')
+const { chromium, devices } = require('playwright')
 
 const app = express();
-const PORT = process.env.PORT||4000;
+const PORT = process.env.PORT || 4000;
 
 
-const StealthPlugin = require('puppeteer-extra-plugin-stealth')
-puppeteer.use(StealthPlugin())
+// const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+// puppeteer.use(StealthPlugin())
 app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
@@ -21,39 +22,43 @@ app.use(bodyParser.json())
 let API_KEY = process.env.API_KEY;
 
 const webSteal = async (celebName) => {
-    const browser = await puppeteer.launch({headless:true, args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-      ]});
+    // const browser = await puppeteer.launch({headless:true, args: [
+    //     '--no-sandbox',
+    //     '--disable-setuid-sandbox',
+    //   ]});
+    const browser = await chromium.launch();
+    const context = await browser.newContext(devices['iPhone 11']);
+    const page = await context.newPage()
 
     const baseUrl = "https://www.rottentomatoes.com/celebrity/";
 
-    const page = await browser.newPage();
-    await page.setUserAgent("'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';")
+    // const page = await browser.newPage();
+    // await page.setUserAgent("'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';")
 
-    
+
     //This code lets us navigate to our desired page, as well as check the response code
+    // let code = (await page.goto(baseUrl + celebName)).status()
     let code = (await page.goto(baseUrl + celebName)).status()
-    console.log("Code",code);
-    
+    console.log("Code", code);
+
     //if the code sent back isn't OK (200), then we try an alternate url.
-    if ( code !=200) {
+    if (code != 200) {
         let nameTest = celebName.split("_");
-        console.log("Something happened, code:",code);
+        console.log("Something happened, code:", code);
         if (nameTest.length == 3) {
             console.log("Plan B");
-            await page.goto(baseUrl+nameTest[0]+"_"+nameTest[2])
-            await page.waitForNetworkIdle()
+            await page.goto(baseUrl + nameTest[0] + "_" + nameTest[2])
+            // await page.waitForNetworkIdle()
             await page.screenshot({ path: 'planB.png' })
         }
-        else{
+        else {
             console.log("plan A")
         }
     }
 
-    
+
     const data = await page.evaluate(() => {
-        
+
         const medias = document.body.querySelectorAll("tbody")
 
         let bioContainer = document.querySelector('.celebrity-bio');
@@ -94,7 +99,7 @@ const webSteal = async (celebName) => {
                 // Only getting movies/shows that aren't talk shows, and also reviewed by both audiences and critics.
                 if (y.querySelector(".celebrity-filmography__credits").innerText != "Guest" && (y.getAttribute('data-audiencescore') !== '0' && y.getAttribute('data-tomatometer') != '0')) {
 
-                    let icons= y.querySelectorAll('.icon--tiny')
+                    let icons = y.querySelectorAll('.icon--tiny')
 
                     let mediaObj = {
                         name: y.getAttribute('data-title'),
@@ -127,7 +132,7 @@ app.get('/api/scrape/:q', async (req, res) => {
 
     let scrapedData = await webSteal(req.params.q);
     // console.log(scrapedData);
-    console.log("Finished Scraping for",req.params.q);
+    console.log("Finished Scraping for", req.params.q);
     console.log("-".repeat(40));
     res.json(scrapedData);
 
@@ -137,16 +142,16 @@ app.get('/api/search/:q', async (req, res) => {
     console.log("SEARCHING FOR:", req.params.q);
     let query = await fetch(`https://api.themoviedb.org/3/search/person?&api_key=${API_KEY}&language=en-US&query=` + req.params.q)
 
-    console.log("FINISHED SEARCHING FOR:",req.params.q);
+    console.log("FINISHED SEARCHING FOR:", req.params.q);
     console.log("-".repeat(40));
 
     res.json(await query.json())
 
 })
 
-app.get("/",(req,res)=>{
-    res.sendFile(path.resolve(__dirname,'build','index.html'))
+app.get("/", (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
 })
 
 
-app.listen(PORT,()=>{console.log("Server started on port:",PORT)})
+app.listen(PORT, () => { console.log("Server started on port:", PORT) })

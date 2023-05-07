@@ -1,6 +1,6 @@
 FROM node:18
 
-WORKDIR /app
+WORKDIR /
 
 COPY  package*.json ./
 
@@ -11,3 +11,5 @@ COPY . .
 ENV PORT=4000
 
 EXPOSE 4000
+
+CMD ["node","server.js"]

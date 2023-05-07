@@ -24,3 +24,8 @@ yarn-error.log*
 
 dump.txt
 
+Dockerfile
+.dockerignore
+/test-results/
+/playwright-report/
+/playwright/.cache/
