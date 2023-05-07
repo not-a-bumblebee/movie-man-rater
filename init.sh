@@ -2,6 +2,7 @@
 set -e
 
 
+PLAYWRIGHT_BROWSERS_PATH="/opt/render/project/puppeteer"
 
 
 npx playwright install chromium
