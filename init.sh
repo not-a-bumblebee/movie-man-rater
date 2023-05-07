@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-PLAYWRIGHT_BROWSERS_PATH=/opt/render/project/playwright npx playwright install
+$PLAYWRIGHT_BROWSERS_PATH=/opt/render/project/playwright npx playwright install
 
 echo "PEE" $PLAYWRIGHT_BROWSER_PATH
 
