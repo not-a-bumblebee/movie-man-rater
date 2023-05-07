@@ -3,7 +3,7 @@ set -e
 
 PLAYWRIGHT_BROWSERS_PATH=/opt/render/project/playwright npx playwright install
 
-
+echo PLAYWRIGHT_BROWSER_PATH
 
 npx playwright install chromium
 
