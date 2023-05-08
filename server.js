@@ -1,6 +1,5 @@
 const express = require('express')
-// const puppeteer = require('puppeteer')
-const puppeteer = require('puppeteer-extra')
+
 const cors = require('cors')
 require('dotenv').config();
 const bodyParser = require('body-parser');
@@ -38,7 +37,7 @@ const webSteal = async (celebName) => {
 
     //This code lets us navigate to our desired page, as well as check the response code
     // let code = (await page.goto(baseUrl + celebName)).status()
-    let code = (await page.goto(baseUrl + celebName)).status()
+    let code = (await page.goto(baseUrl + celebName,{timeout:0})).status()
     console.log("Code", code);
 
     //if the code sent back isn't OK (200), then we try an alternate url.
@@ -47,7 +46,7 @@ const webSteal = async (celebName) => {
         console.log("Something happened, code:", code);
         if (nameTest.length == 3) {
             console.log("Plan B");
-            await page.goto(baseUrl + nameTest[0] + "_" + nameTest[2])
+            await page.goto(baseUrl + nameTest[0] + "_" + nameTest[2],{timeout:0})
             // await page.waitForNetworkIdle()
             await page.screenshot({ path: 'planB.png' })
         }
