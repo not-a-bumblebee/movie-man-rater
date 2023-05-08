@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-export PLAYWRIGHT_BROWSERS_PATH="/opt/render/.cache/ms-playwright/"
+# export PLAYWRIGHT_BROWSERS_PATH="/opt/render/.cache/ms-playwright/"
 
 npx playwright install chromium
 
