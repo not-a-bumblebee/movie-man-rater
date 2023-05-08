@@ -5,6 +5,8 @@ export PLAYWRIGHT_BROWSERS_PATH="/opt/render/project/playwright"
 
 npx playwright install chromium
 
+echo $PLAYWRIGHT_BROWSERS_PATH
+
 # Store/pull Playwright cache with build cache
 if [[ ! -d $PLAYWRIGHT_BROWSERS_PATH ]]; then
   echo "...Copying Playwright Cache from Build Cache"
